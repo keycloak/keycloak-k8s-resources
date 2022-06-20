@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   annotations:
     app.quarkus.io/commit-id: 3abcc699a10428c7afde8de051cedb4d7a47f3a7
-    app.quarkus.io/build-timestamp: 2022-06-19 - 03:50:08 +0000
+    app.quarkus.io/build-timestamp: 2022-06-20 - 03:49:49 +0000
   labels:
     app.kubernetes.io/version: 999-SNAPSHOT
     app.kubernetes.io/name: keycloak-operator
@@ -15,7 +15,7 @@ kind: Service
 metadata:
   annotations:
     app.quarkus.io/commit-id: 3abcc699a10428c7afde8de051cedb4d7a47f3a7
-    app.quarkus.io/build-timestamp: 2022-06-19 - 03:50:08 +0000
+    app.quarkus.io/build-timestamp: 2022-06-20 - 03:49:49 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 999-SNAPSHOT
@@ -181,7 +181,7 @@ kind: Deployment
 metadata:
   annotations:
     app.quarkus.io/commit-id: 3abcc699a10428c7afde8de051cedb4d7a47f3a7
-    app.quarkus.io/build-timestamp: 2022-06-19 - 03:50:08 +0000
+    app.quarkus.io/build-timestamp: 2022-06-20 - 03:49:49 +0000
   labels:
     app.kubernetes.io/version: 999-SNAPSHOT
     app.kubernetes.io/name: keycloak-operator
@@ -196,7 +196,7 @@ spec:
     metadata:
       annotations:
         app.quarkus.io/commit-id: 3abcc699a10428c7afde8de051cedb4d7a47f3a7
-        app.quarkus.io/build-timestamp: 2022-06-19 - 03:50:08 +0000
+        app.quarkus.io/build-timestamp: 2022-06-20 - 03:49:49 +0000
       labels:
         app.kubernetes.io/version: 999-SNAPSHOT
         app.kubernetes.io/name: keycloak-operator
