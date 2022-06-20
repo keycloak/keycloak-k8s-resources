@@ -3,20 +3,20 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    app.quarkus.io/build-timestamp: 2022-04-21 - 08:45:16 +0000
+    app.quarkus.io/build-timestamp: 2022-06-17 - 10:24:55 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.0
+    app.kubernetes.io/version: 18.0.1
   name: keycloak-operator
 ---
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    app.quarkus.io/build-timestamp: 2022-04-21 - 08:45:16 +0000
+    app.quarkus.io/build-timestamp: 2022-06-17 - 10:24:55 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.0
+    app.kubernetes.io/version: 18.0.1
   name: keycloak-operator
 spec:
   ports:
@@ -26,7 +26,7 @@ spec:
       targetPort: 8080
   selector:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.0
+    app.kubernetes.io/version: 18.0.1
   type: NodePort
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -34,7 +34,7 @@ kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.0
+    app.kubernetes.io/version: 18.0.1
   name: keycloak-operator-view
 roleRef:
   kind: ClusterRole
@@ -112,24 +112,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    app.quarkus.io/build-timestamp: 2022-04-21 - 08:45:16 +0000
+    app.quarkus.io/build-timestamp: 2022-06-17 - 10:24:55 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.0
+    app.kubernetes.io/version: 18.0.1
   name: keycloak-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: keycloak-operator
-      app.kubernetes.io/version: 18.0.0
+      app.kubernetes.io/version: 18.0.1
   template:
     metadata:
       annotations:
-        app.quarkus.io/build-timestamp: 2022-04-21 - 08:45:16 +0000
+        app.quarkus.io/build-timestamp: 2022-06-17 - 10:24:55 +0000
       labels:
         app.kubernetes.io/name: keycloak-operator
-        app.kubernetes.io/version: 18.0.0
+        app.kubernetes.io/version: 18.0.1
     spec:
       containers:
         - env:
@@ -138,8 +138,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: OPERATOR_KEYCLOAK_IMAGE
-              value: quay.io/keycloak/keycloak:18.0.0
-          image: quay.io/keycloak/keycloak-operator:18.0.0
+              value: quay.io/keycloak/keycloak:18.0.1
+          image: quay.io/keycloak/keycloak-operator:18.0.1
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
