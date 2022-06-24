@@ -4,8 +4,8 @@ kind: ServiceAccount
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/commit-id: d048bf22fbf648f6b25f13223d7da0fc258ec5d2
-    app.quarkus.io/build-timestamp: 2022-06-23 - 09:10:18 +0000
+    app.quarkus.io/commit-id: 3d2c3fbc6aa73116edeaabf6b3a7f8ba0ae9769c
+    app.quarkus.io/build-timestamp: 2022-06-24 - 03:53:18 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 999-SNAPSHOT
@@ -17,8 +17,8 @@ kind: Service
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/commit-id: d048bf22fbf648f6b25f13223d7da0fc258ec5d2
-    app.quarkus.io/build-timestamp: 2022-06-23 - 09:10:18 +0000
+    app.quarkus.io/commit-id: 3d2c3fbc6aa73116edeaabf6b3a7f8ba0ae9769c
+    app.quarkus.io/build-timestamp: 2022-06-24 - 03:53:18 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 999-SNAPSHOT
@@ -78,8 +78,8 @@ kind: ImageStream
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/commit-id: d048bf22fbf648f6b25f13223d7da0fc258ec5d2
-    app.quarkus.io/build-timestamp: 2022-06-23 - 09:10:18 +0000
+    app.quarkus.io/commit-id: 3d2c3fbc6aa73116edeaabf6b3a7f8ba0ae9769c
+    app.quarkus.io/build-timestamp: 2022-06-24 - 03:53:18 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 999-SNAPSHOT
@@ -133,8 +133,8 @@ kind: DeploymentConfig
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/commit-id: d048bf22fbf648f6b25f13223d7da0fc258ec5d2
-    app.quarkus.io/build-timestamp: 2022-06-23 - 09:10:18 +0000
+    app.quarkus.io/commit-id: 3d2c3fbc6aa73116edeaabf6b3a7f8ba0ae9769c
+    app.quarkus.io/build-timestamp: 2022-06-24 - 03:53:18 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 999-SNAPSHOT
@@ -149,8 +149,8 @@ spec:
     metadata:
       annotations:
         app.openshift.io/vcs-url: <<unknown>>
-        app.quarkus.io/commit-id: d048bf22fbf648f6b25f13223d7da0fc258ec5d2
-        app.quarkus.io/build-timestamp: 2022-06-23 - 09:10:18 +0000
+        app.quarkus.io/commit-id: 3d2c3fbc6aa73116edeaabf6b3a7f8ba0ae9769c
+        app.quarkus.io/build-timestamp: 2022-06-24 - 03:53:18 +0000
       labels:
         app.openshift.io/runtime: quarkus
         app.kubernetes.io/version: 999-SNAPSHOT
