@@ -19,6 +19,14 @@ spec:
         properties:
           spec:
             properties:
+              hostname:
+                description: |-
+                  Hostname for the Keycloak server.
+                  The special value `INSECURE-DISABLE` disables the hostname strict resolution.
+                type: string
+              instances:
+                description: Number of Keycloak instances in HA mode. Default is 1.
+                type: integer
               serverConfiguration:
                 description: |-
                   Configuration of the Keycloak server.
@@ -40,14 +48,17 @@ spec:
                       type: string
                   type: object
                 type: array
-              hostname:
+              tlsSecret:
                 description: |-
-                  Hostname for the Keycloak server.
-                  The special value `INSECURE-DISABLE` disables the hostname strict resolution.
+                  A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.
+                  The special value `INSECURE-DISABLE` disables https.
                 type: string
-              instances:
-                description: Number of Keycloak instances in HA mode. Default is 1.
-                type: integer
+              disableDefaultIngress:
+                description: Disable the default ingress.
+                type: boolean
+              image:
+                description: Custom Keycloak image to be used.
+                type: string
               unsupported:
                 description: |-
                   In this section you can configure podTemplate advanced features, not production-ready, and not supported settings.
@@ -2754,17 +2765,6 @@ spec:
                         type: object
                     type: object
                 type: object
-              tlsSecret:
-                description: |-
-                  A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.
-                  The special value `INSECURE-DISABLE` disables https.
-                type: string
-              disableDefaultIngress:
-                description: Disable the default ingress.
-                type: boolean
-              image:
-                description: Custom Keycloak image to be used.
-                type: string
             required:
             - hostname
             - tlsSecret
