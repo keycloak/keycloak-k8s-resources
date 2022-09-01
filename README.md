@@ -6,7 +6,17 @@ This repository contains examples with a temporary workaround for the missing Cl
 
 To provide the best experience, the new Operator will use a new approach to manage Keycloak resources, such as Realms, Clients and Users. This approach will leverage the [new storage architecture](https://www.keycloak.org/2022/07/storage-map.html) and future immutability options, making the CRs the declarative single source of truth. In comparison to the [legacy Operator](https://github.com/keycloak/keycloak-operator), this will bring high robustness, reliability and predictability to the whole solution.
 
-However, since the new storage is still WIP and currently is lacking some features like the options for immutability that are crucial for the CRs, the new Operator is currently missing those CRs for managing Keycloak resources. The missing CRs will be added once the new store has support for it.
+Before we would consider the new Operator ready for leveraging CRs, we expect completing several features including but not
+limited to:
+
+* File store (expected in Keycloak 20) to persist data in a file instead of DB.
+* Read-only administration REST API, UI Console and other interfaces. This is required for the new immutability concept
+  which will be used to ensure any data coming from the CRs (and subsequently from the file store) are read-only from
+  all interfaces.
+
+All of this is critical to proper CRs implementation, hence the new Operator is currently missing the CRDs for managing
+Keycloak resources. The missing CRDs will be added once Keycloak has the necessary support for it, which is currently
+expected in Keycloak 21.
 
 ## Using the Realm Import CR
 
