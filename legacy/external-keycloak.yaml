@@ -1,0 +1,12 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: external-keycloak
+  labels:
+    app: external-sso
+spec:
+  unmanaged: true
+  external:
+    enabled: true
+    url: https://example-kc-service:8443
+    contextRoot: /
