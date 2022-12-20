@@ -704,6 +704,7 @@ spec:
                             decisionStrategy:
                               enum:
                               - AFFIRMATIVE
+                              - stableIndex
                               - CONSENSUS
                               - UNANIMOUS
                               type: string
@@ -711,6 +712,7 @@ spec:
                               type: string
                             policyEnforcementMode:
                               enum:
+                              - stableIndex
                               - PERMISSIVE
                               - ENFORCING
                               - DISABLED
@@ -750,11 +752,13 @@ spec:
                                   decisionStrategy:
                                     enum:
                                     - AFFIRMATIVE
+                                    - stableIndex
                                     - CONSENSUS
                                     - UNANIMOUS
                                     type: string
                                   logic:
                                     enum:
+                                    - stableIndex
                                     - POSITIVE
                                     - NEGATIVE
                                     type: string
@@ -934,6 +938,8 @@ spec:
                           type: array
                       type: object
                     type: array
+                  otpPolicyCodeReusable:
+                    type: boolean
                   clientProfiles:
                     type: object
                     x-kubernetes-preserve-unknown-fields: true
@@ -1558,6 +1564,7 @@ spec:
                             decisionStrategy:
                               enum:
                               - AFFIRMATIVE
+                              - stableIndex
                               - CONSENSUS
                               - UNANIMOUS
                               type: string
@@ -1565,6 +1572,7 @@ spec:
                               type: string
                             policyEnforcementMode:
                               enum:
+                              - stableIndex
                               - PERMISSIVE
                               - ENFORCING
                               - DISABLED
@@ -1604,11 +1612,13 @@ spec:
                                   decisionStrategy:
                                     enum:
                                     - AFFIRMATIVE
+                                    - stableIndex
                                     - CONSENSUS
                                     - UNANIMOUS
                                     type: string
                                   logic:
                                     enum:
+                                    - stableIndex
                                     - POSITIVE
                                     - NEGATIVE
                                     type: string
@@ -1930,6 +1940,7 @@ spec:
                             decisionStrategy:
                               enum:
                               - AFFIRMATIVE
+                              - stableIndex
                               - CONSENSUS
                               - UNANIMOUS
                               type: string
@@ -1937,6 +1948,7 @@ spec:
                               type: string
                             policyEnforcementMode:
                               enum:
+                              - stableIndex
                               - PERMISSIVE
                               - ENFORCING
                               - DISABLED
@@ -1976,11 +1988,13 @@ spec:
                                   decisionStrategy:
                                     enum:
                                     - AFFIRMATIVE
+                                    - stableIndex
                                     - CONSENSUS
                                     - UNANIMOUS
                                     type: string
                                   logic:
                                     enum:
+                                    - stableIndex
                                     - POSITIVE
                                     - NEGATIVE
                                     type: string

@@ -4,10 +4,10 @@ kind: ServiceAccount
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2022-12-20 - 19:05:31 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 20.0.2
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 ---
@@ -16,10 +16,10 @@ kind: Service
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2022-12-20 - 19:05:31 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 20.0.2
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 spec:
@@ -29,7 +29,7 @@ spec:
       targetPort: 8080
   selector:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 20.0.2
   type: ClusterIP
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -37,7 +37,7 @@ kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 20.0.2
   name: keycloak-operator-view
 roleRef:
   kind: ClusterRole
@@ -76,14 +76,14 @@ kind: ImageStream
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2022-12-20 - 19:05:31 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 20.0.2
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 spec:
-  dockerImageRepository: docker.io/keycloak/keycloak-operator
+  dockerImageRepository: quay.io/keycloak/keycloak-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -130,26 +130,26 @@ kind: DeploymentConfig
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2022-12-20 - 19:05:31 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 20.0.2
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 spec:
   replicas: 1
   selector:
+    app.kubernetes.io/version: 20.0.2
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
   template:
     metadata:
       annotations:
         app.openshift.io/vcs-url: <<unknown>>
-        app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+        app.quarkus.io/build-timestamp: 2022-12-20 - 19:05:31 +0000
       labels:
         app.openshift.io/runtime: quarkus
+        app.kubernetes.io/version: 20.0.2
         app.kubernetes.io/name: keycloak-operator
-        app.kubernetes.io/version: 18.0.2
     spec:
       containers:
         - env:
@@ -158,8 +158,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: OPERATOR_KEYCLOAK_IMAGE
-              value: quay.io/keycloak/keycloak:18.0.2
-          image: quay.io/keycloak/keycloak-operator:18.0.2
+              value: quay.io/keycloak/keycloak:20.0.2
+          image: keycloak-operator:20.0.2
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -194,5 +194,5 @@ spec:
           - keycloak-operator
         from:
           kind: ImageStreamTag
-          name: keycloak-operator:18.0.2
+          name: keycloak-operator:20.0.2
       type: ImageChange
