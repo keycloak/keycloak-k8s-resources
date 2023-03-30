@@ -3,20 +3,20 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2023-03-30 - 11:19:25 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 21.0.2
   name: keycloak-operator
 ---
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2023-03-30 - 11:19:25 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 21.0.2
   name: keycloak-operator
 spec:
   ports:
@@ -26,15 +26,85 @@ spec:
       targetPort: 8080
   selector:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 21.0.2
   type: NodePort
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: keycloak-operator-role
+rules:
+  - apiGroups:
+      - apps
+      - extensions
+    resources:
+      - statefulsets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+  name: keycloak-operator-role-binding
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: keycloak-operator-role
+subjects:
+  - kind: ServiceAccount
+    name: keycloak-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: keycloak-operator
+    app.kubernetes.io/version: 21.0.2
   name: keycloak-operator-view
 roleRef:
   kind: ClusterRole
@@ -112,24 +182,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2023-03-30 - 11:19:25 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 21.0.2
   name: keycloak-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: keycloak-operator
-      app.kubernetes.io/version: 18.0.2
+      app.kubernetes.io/version: 21.0.2
   template:
     metadata:
       annotations:
-        app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+        app.quarkus.io/build-timestamp: 2023-03-30 - 11:19:25 +0000
       labels:
         app.kubernetes.io/name: keycloak-operator
-        app.kubernetes.io/version: 18.0.2
+        app.kubernetes.io/version: 21.0.2
     spec:
       containers:
         - env:
@@ -138,8 +208,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: OPERATOR_KEYCLOAK_IMAGE
-              value: quay.io/keycloak/keycloak:18.0.2
-          image: quay.io/keycloak/keycloak-operator:18.0.2
+              value: quay.io/keycloak/keycloak:21.0.2
+          image: quay.io/keycloak/keycloak-operator:21.0.2
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
