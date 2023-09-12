@@ -4,45 +4,62 @@ kind: ServiceAccount
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2023-09-12 - 17:54:40 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 22.0.3
+    app.kubernetes.io/managed-by: quarkus
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 ---
-apiVersion: v1
-kind: Service
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
 metadata:
-  annotations:
-    app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
-  labels:
-    app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
-    app.openshift.io/runtime: quarkus
-  name: keycloak-operator
-spec:
-  ports:
-    - name: http
-      port: 80
-      targetPort: 8080
-  selector:
-    app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
-  type: ClusterIP
+  name: keycloakrealmimportcontroller-cluster-role
+rules:
+  - apiGroups:
+      - k8s.keycloak.org
+    resources:
+      - keycloakrealmimports
+      - keycloakrealmimports/status
+      - keycloakrealmimports/finalizers
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+      - create
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: keycloakcontroller-cluster-role
+rules:
+  - apiGroups:
+      - k8s.keycloak.org
+    resources:
+      - keycloaks
+      - keycloaks/status
+      - keycloaks/finalizers
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+      - create
+      - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  labels:
-    app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
-  name: keycloak-operator-view
+  name: keycloakrealmimportcontroller-role-binding
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: view
+  name: keycloakrealmimportcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: keycloak-operator
@@ -62,94 +79,85 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: keycloakrealmimportcontroller-role-binding
+  labels:
+    app.kubernetes.io/name: keycloak-operator
+    app.kubernetes.io/version: 22.0.3
+  name: keycloak-operator-view
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloakrealmimportcontroller-cluster-role
+  name: view
 subjects:
   - kind: ServiceAccount
     name: keycloak-operator
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: <<unknown>>
+    app.quarkus.io/build-timestamp: 2023-09-12 - 17:54:40 +0000
+  labels:
+    app.kubernetes.io/name: keycloak-operator
+    app.kubernetes.io/version: 22.0.3
+    app.kubernetes.io/managed-by: quarkus
+    app.openshift.io/runtime: quarkus
+  name: keycloak-operator
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: keycloak-operator
+    app.kubernetes.io/version: 22.0.3
+  type: ClusterIP
 ---
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2023-09-12 - 17:54:40 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 22.0.3
+    app.kubernetes.io/managed-by: quarkus
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 spec:
-  dockerImageRepository: docker.io/keycloak/keycloak-operator
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: keycloakcontroller-cluster-role
-rules:
-  - apiGroups:
-      - k8s.keycloak.org
-    resources:
-      - keycloaks
-      - keycloaks/status
-      - keycloaks/finalizers
-    verbs:
-      - get
-      - list
-      - watch
-      - create
-      - delete
-      - patch
-      - update
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: keycloakrealmimportcontroller-cluster-role
-rules:
-  - apiGroups:
-      - k8s.keycloak.org
-    resources:
-      - keycloakrealmimports
-      - keycloakrealmimports/status
-      - keycloakrealmimports/finalizers
-    verbs:
-      - get
-      - list
-      - watch
-      - create
-      - delete
-      - patch
-      - update
+  dockerImageRepository: quay.io/keycloak/keycloak-operator
+  lookupPolicy:
+    local: true
 ---
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   annotations:
     app.openshift.io/vcs-url: <<unknown>>
-    app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+    app.quarkus.io/build-timestamp: 2023-09-12 - 17:54:40 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 22.0.3
+    app.kubernetes.io/managed-by: quarkus
     app.openshift.io/runtime: quarkus
   name: keycloak-operator
 spec:
   replicas: 1
   selector:
     app.kubernetes.io/name: keycloak-operator
-    app.kubernetes.io/version: 18.0.2
+    app.kubernetes.io/version: 22.0.3
   template:
     metadata:
       annotations:
         app.openshift.io/vcs-url: <<unknown>>
-        app.quarkus.io/build-timestamp: 2022-06-29 - 14:57:46 +0000
+        app.quarkus.io/build-timestamp: 2023-09-12 - 17:54:40 +0000
       labels:
+        app.kubernetes.io/managed-by: quarkus
         app.openshift.io/runtime: quarkus
         app.kubernetes.io/name: keycloak-operator
-        app.kubernetes.io/version: 18.0.2
+        app.kubernetes.io/version: 22.0.3
     spec:
       containers:
         - env:
@@ -158,8 +166,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: OPERATOR_KEYCLOAK_IMAGE
-              value: quay.io/keycloak/keycloak:18.0.2
-          image: quay.io/keycloak/keycloak-operator:18.0.2
+              value: quay.io/keycloak/keycloak:22.0.3
+          image: keycloak-operator:22.0.3
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -167,8 +175,8 @@ spec:
               path: /q/health/live
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 0
-            periodSeconds: 30
+            initialDelaySeconds: 5
+            periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 10
           name: keycloak-operator
@@ -182,8 +190,18 @@ spec:
               path: /q/health/ready
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 0
-            periodSeconds: 30
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          startupProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/started
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 10
       serviceAccountName: keycloak-operator
@@ -194,5 +212,5 @@ spec:
           - keycloak-operator
         from:
           kind: ImageStreamTag
-          name: keycloak-operator:18.0.2
+          name: keycloak-operator:22.0.3
       type: ImageChange
