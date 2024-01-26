@@ -19,35 +19,56 @@ spec:
         properties:
           spec:
             properties:
-              serverConfiguration:
-                description: |-
-                  Configuration of the Keycloak server.
-                  expressed as a keys (reference: https://www.keycloak.org/server/all-config) and values that can be either direct values or references to secrets.
-                items:
-                  properties:
-                    secret:
-                      properties:
-                        optional:
-                          type: boolean
-                        key:
-                          type: string
-                        name:
-                          type: string
-                      type: object
-                    value:
-                      type: string
-                    name:
-                      type: string
-                  type: object
-                type: array
+              transaction:
+                description: In this section you can find all properties related to
+                  the settings of transaction behavior.
+                properties:
+                  xaEnabled:
+                    description: Determine whether Keycloak should use a non-XA datasource
+                      in case the database does not support XA transactions.
+                    type: boolean
+                type: object
+              http:
+                description: In this section you can configure Keycloak features related
+                  to HTTP and HTTPS
+                properties:
+                  httpPort:
+                    description: The used HTTP port.
+                    type: integer
+                  tlsSecret:
+                    description: "A secret containing the TLS configuration for HTTPS.\
+                      \ Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets."
+                    type: string
+                  httpsPort:
+                    description: The used HTTPS port.
+                    type: integer
+                  httpEnabled:
+                    description: Enables the HTTP listener.
+                    type: boolean
+                type: object
               hostname:
-                description: |-
-                  Hostname for the Keycloak server.
-                  The special value `INSECURE-DISABLE` disables the hostname strict resolution.
-                type: string
-              instances:
-                description: Number of Keycloak instances in HA mode. Default is 1.
-                type: integer
+                description: In this section you can configure Keycloak hostname and
+                  related properties.
+                properties:
+                  hostname:
+                    description: Hostname for the Keycloak server.
+                    type: string
+                  strict:
+                    description: Disables dynamically resolving the hostname from
+                      request headers.
+                    type: boolean
+                  strictBackchannel:
+                    description: By default backchannel URLs are dynamically resolved
+                      from request headers to allow internal and external applications.
+                    type: boolean
+                  admin:
+                    description: The hostname for accessing the administration console.
+                    type: string
+                  adminUrl:
+                    description: "Set the base URL for accessing the administration\
+                      \ console, including scheme, host, port and path"
+                    type: string
+                type: object
               unsupported:
                 description: |-
                   In this section you can configure podTemplate advanced features, not production-ready, and not supported settings.
@@ -66,8 +87,6 @@ spec:
                           deletionGracePeriodSeconds:
                             type: integer
                           deletionTimestamp:
-                            type: string
-                          clusterName:
                             type: string
                           resourceVersion:
                             type: string
@@ -185,8 +204,6 @@ spec:
                                               type: integer
                                             deletionTimestamp:
                                               type: string
-                                            clusterName:
-                                              type: string
                                             resourceVersion:
                                               type: string
                                             annotations:
@@ -283,6 +300,17 @@ spec:
                                                 apiGroup:
                                                   type: string
                                               type: object
+                                            dataSourceRef:
+                                              properties:
+                                                name:
+                                                  type: string
+                                                kind:
+                                                  type: string
+                                                namespace:
+                                                  type: string
+                                                apiGroup:
+                                                  type: string
+                                              type: object
                                             resources:
                                               properties:
                                                 limits:
@@ -292,6 +320,13 @@ spec:
                                                     - type: string
                                                     x-kubernetes-int-or-string: true
                                                   type: object
+                                                claims:
+                                                  items:
+                                                    properties:
+                                                      name:
+                                                        type: string
+                                                    type: object
+                                                  type: array
                                                 requests:
                                                   additionalProperties:
                                                     anyOf:
@@ -299,15 +334,6 @@ spec:
                                                     - type: string
                                                     x-kubernetes-int-or-string: true
                                                   type: object
-                                              type: object
-                                            dataSourceRef:
-                                              properties:
-                                                name:
-                                                  type: string
-                                                kind:
-                                                  type: string
-                                                apiGroup:
-                                                  type: string
                                               type: object
                                             accessModes:
                                               items:
@@ -1344,6 +1370,13 @@ spec:
                                         - type: string
                                         x-kubernetes-int-or-string: true
                                       type: object
+                                    claims:
+                                      items:
+                                        properties:
+                                          name:
+                                            type: string
+                                        type: object
+                                      type: array
                                     requests:
                                       additionalProperties:
                                         anyOf:
@@ -1363,6 +1396,20 @@ spec:
                                         type: string
                                     type: object
                                   type: array
+                              type: object
+                            type: array
+                          resourceClaims:
+                            items:
+                              properties:
+                                source:
+                                  properties:
+                                    resourceClaimTemplateName:
+                                      type: string
+                                    resourceClaimName:
+                                      type: string
+                                  type: object
+                                name:
+                                  type: string
                               type: object
                             type: array
                           automountServiceAccountToken:
@@ -1837,6 +1884,13 @@ spec:
                                         - type: string
                                         x-kubernetes-int-or-string: true
                                       type: object
+                                    claims:
+                                      items:
+                                        properties:
+                                          name:
+                                            type: string
+                                        type: object
+                                      type: array
                                     requests:
                                       additionalProperties:
                                         anyOf:
@@ -2328,6 +2382,13 @@ spec:
                                         - type: string
                                         x-kubernetes-int-or-string: true
                                       type: object
+                                    claims:
+                                      items:
+                                        properties:
+                                          name:
+                                            type: string
+                                        type: object
+                                      type: array
                                     requests:
                                       additionalProperties:
                                         anyOf:
@@ -2697,12 +2758,20 @@ spec:
                           topologySpreadConstraints:
                             items:
                               properties:
+                                nodeTaintsPolicy:
+                                  type: string
                                 topologyKey:
                                   type: string
                                 maxSkew:
                                   type: integer
+                                nodeAffinityPolicy:
+                                  type: string
                                 whenUnsatisfiable:
                                   type: string
+                                matchLabelKeys:
+                                  items:
+                                    type: string
+                                  type: array
                                 labelSelector:
                                   properties:
                                     matchExpressions:
@@ -2723,6 +2792,8 @@ spec:
                                         type: string
                                       type: object
                                   type: object
+                                minDomains:
+                                  type: integer
                               type: object
                             type: array
                           overhead:
@@ -2749,25 +2820,148 @@ spec:
                                   type: string
                               type: object
                             type: array
+                          schedulingGates:
+                            items:
+                              properties:
+                                name:
+                                  type: string
+                              type: object
+                            type: array
                           runtimeClassName:
                             type: string
+                          hostUsers:
+                            type: boolean
                         type: object
                     type: object
                 type: object
-              tlsSecret:
+              ingress:
                 description: |-
-                  A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.
-                  The special value `INSECURE-DISABLE` disables https.
-                type: string
-              disableDefaultIngress:
-                description: Disable the default ingress.
-                type: boolean
+                  The deployment is, by default, exposed through a basic ingress.
+                  You can change this behaviour by setting the enabled property to false.
+                properties:
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: Additional annotations to be appended to the Ingress
+                      object
+                    type: object
+                  enabled:
+                    type: boolean
+                  className:
+                    type: string
+                type: object
               image:
                 description: Custom Keycloak image to be used.
                 type: string
-            required:
-            - hostname
-            - tlsSecret
+              instances:
+                description: Number of Keycloak instances in HA mode. Default is 1.
+                type: integer
+              imagePullSecrets:
+                description: Secret(s) that might be used when pulling an image from
+                  a private container image registry or repository.
+                items:
+                  properties:
+                    name:
+                      type: string
+                  type: object
+                type: array
+              additionalOptions:
+                description: |-
+                  Configuration of the Keycloak server.
+                  expressed as a keys (reference: https://www.keycloak.org/server/all-config) and values that can be either direct values or references to secrets.
+                items:
+                  properties:
+                    secret:
+                      properties:
+                        optional:
+                          type: boolean
+                        key:
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    value:
+                      type: string
+                    name:
+                      type: string
+                  type: object
+                type: array
+              db:
+                description: In this section you can find all properties related to
+                  connect to a database.
+                properties:
+                  passwordSecret:
+                    description: The reference to a secret holding the password of
+                      the database user.
+                    properties:
+                      optional:
+                        type: boolean
+                      key:
+                        type: string
+                      name:
+                        type: string
+                    type: object
+                  usernameSecret:
+                    description: The reference to a secret holding the username of
+                      the database user.
+                    properties:
+                      optional:
+                        type: boolean
+                      key:
+                        type: string
+                      name:
+                        type: string
+                    type: object
+                  port:
+                    description: "Sets the port of the default JDBC URL of the chosen\
+                      \ vendor. If the `url` option is set, this option is ignored."
+                    type: integer
+                  schema:
+                    description: The database schema to be used.
+                    type: string
+                  host:
+                    description: "Sets the hostname of the default JDBC URL of the\
+                      \ chosen vendor. If the `url` option is set, this option is\
+                      \ ignored."
+                    type: string
+                  url:
+                    description: "The full database JDBC URL. If not provided, a default\
+                      \ URL is set based on the selected database vendor. For instance,\
+                      \ if using 'postgres', the default JDBC URL would be 'jdbc:postgresql://localhost/keycloak'. "
+                    type: string
+                  poolInitialSize:
+                    description: The initial size of the connection pool.
+                    type: integer
+                  poolMaxSize:
+                    description: The maximum size of the connection pool.
+                    type: integer
+                  vendor:
+                    description: The database vendor.
+                    type: string
+                  database:
+                    description: "Sets the database name of the default JDBC URL of\
+                      \ the chosen vendor. If the `url` option is set, this option\
+                      \ is ignored."
+                    type: string
+                  poolMinSize:
+                    description: The minimal size of the connection pool.
+                    type: integer
+                type: object
+              features:
+                description: "In this section you can configure Keycloak features,\
+                  \ which should be enabled/disabled."
+                properties:
+                  disabled:
+                    description: Disabled Keycloak features
+                    items:
+                      type: string
+                    type: array
+                  enabled:
+                    description: Enabled Keycloak features
+                    items:
+                      type: string
+                    type: array
+                type: object
             type: object
           status:
             properties:
@@ -2775,16 +2969,30 @@ spec:
                 items:
                   properties:
                     status:
-                      type: boolean
+                      type: string
+                    lastTransitionTime:
+                      type: string
+                    observedGeneration:
+                      type: integer
                     type:
                       type: string
                     message:
                       type: string
                   type: object
                 type: array
+              observedGeneration:
+                type: integer
+              instances:
+                type: integer
+              selector:
+                type: string
             type: object
         type: object
     served: true
     storage: true
     subresources:
+      scale:
+        labelSelectorPath: .status.selector
+        specReplicasPath: .spec.instances
+        statusReplicasPath: .status.instances
       status: {}
