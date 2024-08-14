@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   annotations:
     app.quarkus.io/quarkus-version: 3.8.5
-    app.quarkus.io/vcs-uri: https://github.com/stianst/keycloak.git
+    app.quarkus.io/vcs-uri: https://github.com/keycloak/keycloak.git
     app.quarkus.io/build-timestamp: 2024-07-18 - 07:20:41 +0000
   labels:
     app.kubernetes.io/name: keycloak-operator
